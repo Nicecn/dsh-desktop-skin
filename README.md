@@ -1,205 +1,205 @@
 # dsh-desktop-skin
 
-A wallpaper-aware glass skin for DeepSeek Harness.
+[**简体中文**](README.md) | [English](README.en.md)
 
-`dsh-desktop-skin` replaces the flat surfaces of the DSH desktop client with a semi-transparent
-glass layer: the wallpaper shows through the top bar, sidebar, title bar, input area and message
-cards, while the text keeps its contrast. The accent colour is **derived from the wallpaper
-itself** — swap the wallpaper and the whole skin follows it. The look is a single injected
-stylesheet; a small amount of JavaScript drives the settings panel, the wallpaper source and a
-few scroll behaviours. No host service, no tool, no data collection.
+DeepSeek Harness 的**壁纸感知玻璃皮肤**。
 
-## Screenshots
+把 DSH 桌面端原本的实心表面换成一层半透明玻璃：壁纸从顶条、侧栏、标题条、输入区
+和消息卡片后面均匀透出来，同时保住文字对比度。外观主体是一段注入的样式表，另有一小部分
+JavaScript 负责设置面板、壁纸来源与几处滚动行为。不依赖宿主服务、不注册工具、不采集数据。
 
-![Main window](example_img/01-overview.png)
+![主界面](example_img/01-overview.png)
 
-| Theme | Interface |
+| 主题 | 界面 |
 |---|---|
-| ![Theme tab](example_img/02-settings-theme.png) | ![Interface tab](example_img/03-settings-interface.png) |
+| ![主题 tab](example_img/02-settings-theme.png) | ![界面 tab](example_img/03-settings-interface.png) |
 
-| Wallpaper | Plugins page |
+| 背景 | 插件页 |
 |---|---|
-| ![Wallpaper tab](example_img/04-settings-wallpaper.png) | ![Plugins page](example_img/05-plugins-page.png) |
+| ![背景 tab](example_img/04-settings-wallpaper.png) | ![插件页](example_img/05-plugins-page.png) |
 
-## Features
+## 功能
 
-### Wallpaper system
+### 壁纸系统
 
-- **Bundled default wallpaper** — a line-art illustration, embedded in the plugin so the
-  skin looks complete on a fresh install.
-- **Custom wallpaper** — pick any image from disk. It is scaled down to a 1920 px long
-  edge and re-encoded as JPEG (q 0.85) before being stored, because the whole settings
-  object lives in `localStorage`. If the payload would still exceed the quota, it is
-  re-compressed at 1600 px / q 0.78 and then 1280 px / q 0.72; if all three steps fail the
-  previous wallpaper is restored and an explicit error is shown — never a silent data loss.
-- **Fit and position** — `cover` or `contain`, plus a vertical anchor of top / centre /
-  bottom.
-- **Three wallpaper sources**, in priority order: `custom` (your own image) ›
-  `follow` (mirror whatever the `dsh-any-background` plugin is currently showing) ›
-  `default` (the bundled image). The skin does not require `dsh-any-background`, it can
-  simply track it.
-- **Theme colour extracted from the wallpaper** — the accent hue is sampled from the
-  current image (histogram bucketing, low-saturation pixels skipped) and applied to every
-  surface, so the skin shifts with the wallpaper. A manual override is available under
-  the **Colour** tab.
+- **内嵌默认壁纸**：一张线稿插图，随插件打包，装上即有完整观感。
+- **自定义壁纸**：可从磁盘选图。选中的图会先等比缩到最长边 1920 px、按 JPEG q0.85 重新
+  编码再存入 —— 整份设置存在 `localStorage` 里，原图直接存会撑爆配额。仍然超限时逐档降为
+  1600 px / q0.78、1280 px / q0.72；三档都不行就明确报错并把壁纸字段回滚到上一张，
+  不静默丢图、不把已有设置写坏。
+- **铺法与位置**：`cover` / `contain` 两种铺法，纵向锚点可选上 / 中 / 下。
+- **三种图源**，优先级从高到低：`custom`（自己的图）› `follow`（跟随 `dsh-any-background`
+  当前那张图）› `default`（内嵌图）。本皮肤**不依赖** `dsh-any-background`，只是可以跟着它走。
+- **从壁纸取主题色**：色相从当前壁纸采样得出（分桶统计，低饱和像素跳过），整界面的强调色
+  跟着壁纸走。想锁死色相可以在「色彩」tab 手动指定。
 
-### Layout
+### 布局
 
-- The whole window frame is re-skinned: top bar, collapsible sidebar, title strip and
-  input area share one surface treatment, with a wallpaper layer behind everything. Their
-  height and width are left to the host — the skin changes surfaces, not geometry.
-- **Message card** grows with its content up to a cap of `calc(100% - 8px - 33.334px)`,
-  then scrolls internally instead of pushing the input box off screen. Corners are squared
-  at the top and 14 px at the bottom.
-- **Input area** keeps a 16 px radius and a 0.78 surface opacity, with the control row
-  aligned to the same grid as the message card.
-- Sidebar collapse state, new-session button and window controls are all re-aligned so
-  nothing jumps when the sidebar folds away.
+- 整套窗口框架重做：顶条、可收起侧栏、标题条、输入区共用同一种表面处理，壁纸层垫在最底下。
+  顶条高度与侧栏宽度沿用宿主的值 —— 皮肤只改「表面」，不改几何尺寸。
+- **消息卡片**按内容撑高，封顶 `calc(100% - 8px - 33.334px)`（减数 = 卡片自身 padding 32 px
+  + 边框 1.334 px + 上下留白 8 px），到顶后在卡片内部滚动，不把输入框顶出视口。
+  四角为上两角直角、下两角 14 px。
+- **输入区**保持 16 px 圆角与 0.78 的底色透明度，控件行与消息卡片对齐同一栅格。
+- 侧栏收起态、新会话按钮、窗口三键区都重新对位，侧栏折叠时不会跳位。
 
-### Settings panel — six tabs
+### 设置面板（六个 tab）
 
-The skin registers its own page in **Settings → dsh-壁纸** (the in-app label is Chinese;
-see *Known limitations*).
+皮肤在宿主 **设置 → dsh-壁纸** 里注册了自己的页面：
 
-| Tab | What it controls |
+| Tab | 能调什么 |
 |---|---|
-| **Theme** | Current accent colour (HEX + HSL), “extract from wallpaper”, “pick from background”, glass lightness |
-| **Colour** | Interactive hue wheel, HSL / RGB numeric inputs, inspiration palette |
-| **Interface** | Global blur, glass lightness, and independent opacity for each surface |
-| **Font** | Text font family (presets or custom stack), font scale, code font |
-| **Background** | Wallpaper source, image picker, fit, vertical position, re-extract colour |
-| **Config** | Export / import the whole settings object as JSON, reset to defaults |
+| **主题** | 当前主题色（HEX + HSL）、「从背景提取主题色」、「从背景取色」、玻璃明度 |
+| **色彩** | 可交互色轮、HSL / RGB 数值输入、灵感色板 |
+| **界面** | 全局模糊、玻璃明度，以及每块表面的独立透明度 |
+| **字体** | 正文字体族（预设或自定义字体栈）、字号缩放、代码字体 |
+| **背景** | 图源、选图、铺法、纵向位置、重新取色 |
+| **配置** | 整份设置导出 / 导入为 JSON、恢复默认 |
 
-Settings are persisted in `localStorage` under `dsh-aurora-skin:settings` and applied to
-the live page immediately — no restart needed for visual changes.
+设置存在 `localStorage` 的 `dsh-aurora-skin:settings` 键下，写入即时生效，视觉调整不需要重启。
 
-### Interaction
+### 交互增强
 
-- Auto-follow to the newest message when a reply arrives, instead of staying where you
-  scrolled.
-- A one-click “scroll to bottom” control, plus a bridge between the host's message rail
-  and the skin's card cap.
-- Hover, focus-visible and active states on rows, icon buttons, tabs and menu entries are
-  re-drawn in the active accent palette, with a visible focus ring for keyboard use.
-- The hue wheel is operable both by pointer and by keyboard, with ARIA roles on the tab
-  list and panel.
+- 新回复到达时自动跟随到最新一条，而不是停在用户翻到的位置。
+- 一键滚到底控件，并把宿主消息刻度与本皮肤卡片的封顶高度桥接起来。
+- 行、图标按钮、标签页、菜单项的 hover / focus-visible / active 态全部跟随主题色系，
+  键盘操作时有可见的焦点环。
+- 色轮同时支持指针与键盘操作，tab 列表与面板带完整 ARIA 角色。
 
-### Visual details
+### 视觉细节
 
-- Scrollbars use a warm brown thumb (`rgba(120,74,46,.22)`, `0.48` on hover) instead of
-  the host's default grey.
-- Contrast is raised on the low-emphasis text that the host ships very light — measured
-  examples: conversation tabs 2.61:1 → 6.46:1, filter chips 1.23:1 → 6.60:1, selected tab
-  12.62:1.
-- The plugin-market page, the settings page itself and the right-hand side panel get the
-  same surface treatment, so switching pages does not break the illusion.
+- 滚动条滑块改成暖棕 `rgba(120,74,46,.22)`（hover 时 `.48`），替换宿主默认色。
+- 宿主原本过淡的次要文字整体提亮，实测对比度举例：对话标签页 2.61:1 → 6.46:1、
+  筛选标签 1.23:1 → 6.60:1、选中态 12.62:1。
+- 插件市场页、设置页本身、右侧栏面板都套用同一套表面处理，切换页面不会「出戏」。
 
-## Install
+## 安装
 
-### From GitHub
+### 从 GitHub 安装
 
 ```bash
 dsh plugin add github:NiceCNJ/dsh-desktop-skin
 ```
 
-Then restart DeepSeek Harness. Client-side plugins are **not** hot-reloaded — editing the
-plugin or reinstalling it needs a reload of the renderer (restart the app, or press
-`Ctrl+R` inside the window).
+装完**重启 DeepSeek Harness**。客户端插件不走热重载 —— 改插件或重装后必须重载渲染进程
+（重启应用，或在窗口内按 `Ctrl+R`）。
 
-### Manual install
+### 手动安装
 
-1. Clone this repository into your DSH plugins directory:
+1. 克隆到 DSH 插件目录：
 
    ```bash
    git clone https://github.com/NiceCNJ/dsh-desktop-skin.git ~/.dsh/plugins/dsh-desktop-skin
    ```
 
-2. Register it in the profile you use (`~/.dsh/profiles/<profile>/package.json`):
+2. 在使用中的 profile（`~/.dsh/profiles/<profile>/package.json`）里登记：
 
-   - add `"dsh-desktop-skin": "file:../../plugins/dsh-desktop-skin"` to `dependencies`
-   - add `"dsh-desktop-skin"` to `dsh.profile.bundles`
+   - `dependencies` 加 `"dsh-desktop-skin": "file:../../plugins/dsh-desktop-skin"`
+   - `dsh.profile.bundles` 加 `"dsh-desktop-skin"`
 
-3. Make sure the plugin is **not** listed as disabled in `.dsh-market/state.json`, or the
-   plugin market will re-apply the disabled state on next start.
+3. 确认 `.dsh-market/state.json` 里**没有**把它标成禁用，否则插件市场会在下次启动时
+   重放禁用状态。
 
-4. Restart the app.
+4. 重启应用。
 
-### Verify it loaded
+### 验证是否加载成功
 
-Open DevTools (`Ctrl+Shift+I`) and check in the console:
+打开 DevTools（`Ctrl+Shift+I`），在 Console 里：
 
 ```js
-document.getElementById('dsh-aurora-skin-css')   // → <style>, the skin is injected
+document.getElementById('dsh-aurora-skin-css')   // → <style>，说明样式已注入
 window.__DSH_AURORA_SKIN__.version               // → "0.10.2"
-window.__DSH_AURORA_SKIN__.getSettings()         // → the live settings object
+window.__DSH_AURORA_SKIN__.getSettings()         // → 当前整份设置
 document.documentElement.dataset.dshAuroraSkin   // → "0.10.2"
 ```
 
-The console also logs `[dsh-aurora-skin] v0.10.2 applied at …` on start-up.
+启动时 Console 还会打印一条 `[dsh-aurora-skin] v0.10.2 applied at …`。
 
-> The `aurora` prefix in DOM attributes, style element ids, CSS variables and the
-> `localStorage` key is kept on purpose: the package was renamed from `dsh-aurora-skin`,
-> and keeping these ids preserves existing saved settings.
+> DOM 属性、样式元素 id、CSS 变量和 `localStorage` 键里保留 `aurora` 前缀是刻意的：
+> 包已从 `dsh-aurora-skin` 改名而来，保留这些 id 可以让老用户已有的设置继续生效。
 
-## Configuration
+## 配置项
 
-Everything is editable from the in-app panel (**Settings → dsh-壁纸**); the values map to
-CSS custom properties on `<html>`:
+全部在宿主 **设置 → dsh-壁纸** 里调，落成 `<html>` 上的 CSS 自定义属性：
 
-| Control | CSS variable | Default |
+| 控件 | CSS 变量 | 默认值 |
 |---|---|---|
-| Global blur | `--aurora-blur` | 7 px |
-| Sidebar opacity | `--aurora-sidebar-alpha` | 0.36 |
-| Top bar opacity | `--aurora-topbar-alpha` | 0.52 |
-| Input area / controls opacity | `--aurora-composer-alpha` | 0.78 |
-| Card opacity | `--aurora-card-alpha` | 0.55 |
-| Bubble opacity | `--aurora-bubble-alpha` | 0.72 |
-| Code / highlight surfaces opacity | `--aurora-code-alpha` | 0.92 |
-| Menus and popovers opacity | `--aurora-menu-alpha` | 0.96 |
-| Glass lightness | `--aurora-l` | 88 % |
-| Hue offset | `--aurora-hue` | derived from the wallpaper |
+| 全局模糊 | `--aurora-blur` | 7 px |
+| 侧边栏透明度 | `--aurora-sidebar-alpha` | 0.36 |
+| 顶条透明度 | `--aurora-topbar-alpha` | 0.52 |
+| 输入框与控件透明度 | `--aurora-composer-alpha` | 0.78 |
+| 对话框中选项面板透明度 | `--aurora-card-alpha` | 0.55 |
+| 对话气泡透明度 | `--aurora-bubble-alpha` | 0.72 |
+| 产出物与高亮内容透明度 | `--aurora-code-alpha` | 0.92 |
+| 菜单与浮层透明度 | `--aurora-menu-alpha` | 0.96 |
+| 玻璃明度 | `--aurora-l` | 88 % |
+| 色相 | `--aurora-hue` | 由壁纸取色得出 |
 
-The exported config (Config tab) is a flat JSON object. The wallpaper bitmap itself is
-**not** included — only a marker — because the base64 payload is several hundred kilobytes
-to several megabytes. After importing a config on another machine, pick the wallpaper
-again.
+「配置」tab 导出的是一份扁平 JSON。**壁纸图本体不进 JSON**（base64 几百 KB 到几 MB），
+只带一个「是否自定义」标记；换机器导入后需要在「背景」tab 重新选一次图。
 
-## Compatibility
+## 兼容性
 
-- **DSH** `>= 0.2.0-rc.1` (declared in both `engines.dsh` and `dsh.compatibility.dsh`).
-- **Windows** desktop client (the layout assumes the Windows title bar / window-control
-  overlay).
-- Node / browser versions are inherited from the host — the plugin ships as-is, no build
-  step.
+- **DSH** `>= 0.2.0-rc.1`（同时在 `engines.dsh` 与 `dsh.compatibility.dsh` 里声明）。
+- **Windows** 桌面端（布局按 Windows 标题条 / 窗口三键浮层设计）。
+- 无构建步骤，随宿主运行时直接加载。
 
-The skin targets the host's CSS-module class names (for example `mP3x-q_frame`,
-`an3WzG_composerSeat`). These names are stable per module within a host build, but the
-hash prefix can change when the host UI is recompiled, so a new DSH release may require
-re-checking the selectors.
+皮肤的选择器对准宿主的 CSS Modules 类名（例如 `mP3x-q_frame`、`an3WzG_composerSeat`）。
+前缀是「每个 module 一个」的稳定串，但会随宿主 UI 重新编译而变，所以宿主大版本升级后
+需要重新核对一遍选择器。
 
-## Known limitations
+## 已知限制
 
-- **Window corners stay square.** The outer window chassis is drawn by Electron; page CSS
-  cannot round it. All inner surfaces do have rounded corners.
-- **The window-control area is a native overlay.** Electron's `titleBarOverlay` (WCO) is
-  painted by the OS compositor, so its background cannot be made translucent — it is
-  matched to the skin's colour instead.
-- **The “App / Edit” menu bar lives in a shadow root.** It is a custom element whose
-  markup and `:host` style sit inside a `shadowRoot`, so a normal stylesheet cannot reach
-  it; the plugin injects one small rule into that root at runtime. If a future host build
-  switches to `attachShadow({ mode: 'closed' })`, that rule can no longer be applied and
-  the 6 px corner on those menu items will return.
-- **The settings panel UI text is Chinese.** The visual skin is language-neutral, but the
-  panel labels are currently Chinese only.
-- **Bundle size.** `lib/client.js` is ~1.4 MB because the default wallpaper is embedded as
-  a base64 data URI (the plugin has no static-asset URL to serve it from).
-- **Wallpaper storage is `localStorage`-bound.** A user-supplied wallpaper is downscaled
-  and re-compressed to fit the quota; very large or already-quota-full profiles fall back
-  to the bundled image with an error message.
-- **Losing attachments when switching sessions is host behaviour.** The skin injects
-  styles and a few scroll helpers; it does not touch session state, attachments or the
-  message data flow.
+- **窗口外框四角是直角。** 外层窗口由 Electron 绘制，网页 CSS 够不到；内部所有表面都是圆角。
+- **窗口三键区是系统浮层。** Electron 的 `titleBarOverlay`（WCO）由系统合成器绘制，
+  做不到半透明，皮肤只能把它对齐到同一色系。
+- **「应用 / 编辑」菜单在 shadow root 里。** 它是一只自定义元素的 shadow DOM，普通样式表
+  进不去；插件在运行时往那个 root 注入一条小规则来抹掉 6 px 圆角。若宿主改用
+  `attachShadow({ mode: 'closed' })`，这条规则就注入不了，那处圆角会回来。
+- **插件体积约 1.4 MB。** 默认壁纸以 base64 内嵌进 `lib/client.js` —— 插件没有可用的静态
+  资源 URL，只能内嵌。
+- **壁纸受 `localStorage` 配额约束。** 自定义壁纸会被压缩到配额内；配额已满的 profile 会
+  回退到内嵌图并给出提示。
+- **切换会话丢附件属于宿主行为。** 本皮肤只注入样式和几处滚动逻辑，不碰会话状态、
+  附件与消息数据流。
 
-## License
+## 目录结构
+
+| 文件 | 作用 |
+|---|---|
+| `package.json` | 包声明：`dsh.compatibility.dsh` 范围、`dsh.bundle.patch` 登记层、`dsh.client`（platform=web, immediately=true） |
+| `cordis.patch.yml` | 插件登记层，装进 profile 时被合并进组合配置 |
+| `lib/index.js` | host 侧占位（ESM）：无 host 逻辑，只为让插件行能正常加载 |
+| `lib/client.js` | **主体**：`window.__ModuleLoader__.load()` + CommonJS 工厂 + 注入 `<style>`；壁纸以 data URI 内嵌 |
+| `assets/wallpaper.jpg` | 默认壁纸原件（与 `lib/client.js` 内嵌的那份同源） |
+| `tools/sync-wallpaper.mjs` | 换图后重新把 `assets/wallpaper.jpg` 写进 `lib/client.js` 的维护脚本，支持 `--dry-run` |
+| `example_img/` | 文档截图 |
+
+## 实现要点（踩过的坑）
+
+1. **客户端加载器不支持 ESM。** 必须用 `window.__ModuleLoader__.load({ id, factory })`
+   加 `module.exports` 那套；写成 `export default` 会报 `Unexpected token 'export'`。
+   `lib/index.js` 反而是 ESM —— host 侧走 Node ESM，两边契约不同。
+2. **CSS Modules 类名带 hash 前缀。** 形如 `mP3x-q_frame`、`an3WzG_composerSeat`。
+   前缀每个 module 一个，随宿主重新编译可能变，升级宿主后要重新核对。
+3. **属性选择器挂在 `<html>` 上。** `data-windows-titlebar`、`data-ds-dark-theme`、
+   `data-platform` 都在 `documentElement`，所以皮肤根选择器写成 `html[data-dsh-aurora-skin] …`。
+4. **CSS 是 JS 模板字符串。** 模板里任何位置出现反引号都会提前闭合字符串，导致整份
+   client.js 语法错误、插件静默加载失败，而屏幕上还挂着上次注入的样式，看起来一切正常。
+   CSS 内部一律不用反引号，改完必须 `node --check`。
+5. **改完不重启不生效。** 客户端插件不热重载，实测等待 5~10 秒界面毫无变化，
+   按 `Ctrl+R` 重载渲染进程或重启应用才生效。
+
+选择器不是猜的：全部从宿主打包产物里的真实类名读出（`dsh-client-ui-layout`、
+`dsh-client-ui-conversation`、`dsh-client-ui-chat`、`dsh-client-ui-sidebar`、
+`dsh-client-ui-theme` 各自的 `lib/client.js` 与前端 CSS 产物）。
+
+## 卸载
+
+1. 从 profile 的 `dependencies` 与 `dsh.profile.bundles` 里删掉 `dsh-desktop-skin`。
+2. 需要的话清掉 `localStorage` 里的 `dsh-aurora-skin:settings`。
+3. 重启应用。
+
+## 许可
 
 [MIT](LICENSE)
