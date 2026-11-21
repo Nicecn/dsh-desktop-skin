@@ -1,0 +1,29 @@
+# 依赖
+node_modules/
+.pnpm-store/
+
+# 构建产物
+dist/
+*.tsbuildinfo
+
+# 备份与临时文件（这些永远不进仓库）
+backup/
+_bak/
+_work/
+_wip-settings/
+_verify/
+*.bak
+*.bak_*
+*.bak.*
+*.tmp
+*.log
+
+# 系统垃圾
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/
+*.swp

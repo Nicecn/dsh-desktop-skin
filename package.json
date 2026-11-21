@@ -1,0 +1,55 @@
+{
+  "name": "dsh-desktop-skin",
+  "version": "0.10.5",
+  "private": true,
+  "description": "A warm-orange translucent glass skin for DeepSeek Harness.",
+  "license": "MIT",
+  "author": "NiceCNJ",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NiceCNJ/dsh-desktop-skin.git"
+  },
+  "homepage": "https://github.com/NiceCNJ/dsh-desktop-skin#readme",
+  "bugs": {
+    "url": "https://github.com/NiceCNJ/dsh-desktop-skin/issues"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "skin",
+    "theme"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "cordis.patch.yml",
+    "assets/wallpaper.jpg"
+  ],
+  "engines": {
+    "dsh": ">=0.2.0-rc.1"
+  },
+  "dsh": {
+    "compatibility": {
+      "dsh": ">=0.2.0-rc.1"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

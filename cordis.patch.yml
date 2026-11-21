@@ -1,0 +1,7 @@
+# dsh-desktop-skin —— 插件登记层（暖橙玻璃皮肤 / DSH 客户端皮肤插件）
+# 由 `dsh plugin add` 或手工 junction + profile package.json 登记后，
+# 这一层会被合并进 profile 的组合配置，把插件行插进去。
+
+- insert:
+    - id: dsh-desktop-skin
+      name: 'dsh-desktop-skin'
