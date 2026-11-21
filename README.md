@@ -1,12 +1,13 @@
 # dsh-desktop-skin
 
-A warm-orange translucent glass skin for DeepSeek Harness.
+A wallpaper-aware glass skin for DeepSeek Harness.
 
-`dsh-desktop-skin` replaces the flat surfaces of the DSH desktop client with a warm-orange,
-semi-transparent glass layer: the wallpaper shows through the top bar, sidebar, title bar,
-input area and message cards, while the text keeps its contrast. The look is a single
-injected stylesheet; a small amount of JavaScript drives the settings panel, the wallpaper
-source and a few scroll behaviours. No host service, no tool, no data collection.
+`dsh-desktop-skin` replaces the flat surfaces of the DSH desktop client with a semi-transparent
+glass layer: the wallpaper shows through the top bar, sidebar, title bar, input area and message
+cards, while the text keeps its contrast. The accent colour is **derived from the wallpaper
+itself** — swap the wallpaper and the whole skin follows it. The look is a single injected
+stylesheet; a small amount of JavaScript drives the settings panel, the wallpaper source and a
+few scroll behaviours. No host service, no tool, no data collection.
 
 ## Screenshots
 
@@ -79,7 +80,7 @@ the live page immediately — no restart needed for visual changes.
 - A one-click “scroll to bottom” control, plus a bridge between the host's message rail
   and the skin's card cap.
 - Hover, focus-visible and active states on rows, icon buttons, tabs and menu entries are
-  re-drawn in the warm-orange palette, with a visible focus ring for keyboard use.
+  re-drawn in the active accent palette, with a visible focus ring for keyboard use.
 - The hue wheel is operable both by pointer and by keyboard, with ARIA roles on the tab
   list and panel.
 

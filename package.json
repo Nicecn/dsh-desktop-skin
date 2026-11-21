@@ -2,7 +2,7 @@
   "name": "dsh-desktop-skin",
   "version": "0.10.5",
   "private": true,
-  "description": "A warm-orange translucent glass skin for DeepSeek Harness.",
+  "description": "A wallpaper-aware glass skin for DeepSeek Harness: colors follow your wallpaper, every surface configurable.",
   "license": "MIT",
   "author": "NiceCNJ",
   "repository": {
