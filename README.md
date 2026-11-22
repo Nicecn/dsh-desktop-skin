@@ -228,3 +228,19 @@ window.__DSH_AURORA_SKIN__.diagnostics()
 ## 许可
 
 [MIT](LICENSE)
+
+## 反馈与联系
+
+遇到问题、想提建议，或者只是想聊聊：
+
+- **GitHub Issues**：[提交问题](https://github.com/Nicecn/dsh-desktop-skin/issues)（推荐，方便追踪）
+- **QQ**：`1643381776`
+
+报问题时如果方便，请附上这些信息，定位会快很多：
+
+1. DSH 版本（设置 → 关于，能看到版本号）
+2. 插件版本（设置 → dsh-壁纸 → 配置，或看 `client.js` 里的 `VERSION`）
+3. 控制台里 `window.__DSH_AURORA_SKIN__.diagnostics()` 的输出
+4. 控制台有没有红色的 `[dsh-aurora-skin]` 报错行
+5. 一张截图（界面问题最有说服力）
+

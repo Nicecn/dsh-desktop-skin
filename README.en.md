@@ -231,3 +231,19 @@ that line to report the problem.
 ## License
 
 [MIT](LICENSE)
+
+## Feedback
+
+Found a bug, have an idea, or just want to say hi:
+
+- **GitHub Issues** — [open an issue](https://github.com/Nicecn/dsh-desktop-skin/issues) (preferred, easier to track)
+- **QQ** — `1643381776`
+
+When reporting a problem, these make it much faster to pin down:
+
+1. Your DSH version (Settings → About)
+2. The plugin version (Settings → dsh-壁纸 → Config, or the `VERSION` constant in `client.js`)
+3. The output of `window.__DSH_AURORA_SKIN__.diagnostics()`
+4. Any red `[dsh-aurora-skin]` line in the console
+5. A screenshot (for anything visual, this beats paragraphs)
+
