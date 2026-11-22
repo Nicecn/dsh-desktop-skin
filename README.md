@@ -140,13 +140,38 @@ document.documentElement.dataset.dshAuroraSkin   // → "0.10.2"
 
 ## 兼容性
 
-- **DSH** `>= 0.2.0-rc.1`（同时在 `engines.dsh` 与 `dsh.compatibility.dsh` 里声明）。
-- **Windows** 桌面端（布局按 Windows 标题条 / 窗口三键浮层设计）。
-- 无构建步骤，随宿主运行时直接加载。
+- **DSH** `>= 0.2.0-rc.1`（同时在 `engines.dsh` 与 `dsh.compatibility.dsh` 里声明）
+- **Windows** 桌面端（布局按 Windows 标题条 / 窗口三键浮层设计）
+- 无构建步骤，随宿主运行时直接加载
 
-皮肤的选择器对准宿主的 CSS Modules 类名（例如 `mP3x-q_frame`、`an3WzG_composerSeat`）。
-前缀是「每个 module 一个」的稳定串，但会随宿主 UI 重新编译而变，所以宿主大版本升级后
-需要重新核对一遍选择器。
+### 已验证版本
+
+| 插件版本 | 已验证 DSH 版本 | 验证日期 | 备注 |
+|---|---|---|---|
+| 0.10.8 | `0.2.1-rc.3` | 2026-11-22 | 旧构建，前缀 `mP3x-q` 系列 |
+| 0.10.8 | `0.2.2-rc.5`（NEXT 2.0.24-next） | 2026-11-22 | 新构建，前缀已变 `vcssFG` 系列 |
+
+### 类名自适应（0.10.7 起）
+
+宿主的 CSS Modules 类名格式是 `<哈希前缀>_<局部名>`（例如 `mP3x-q_frame`），
+那个哈希前缀是**内容哈希**，宿主每次重新编译都可能变。
+
+**0.10.7 之前**插件把前缀写死在代码里，宿主一重编译整套样式就失效。
+**0.10.7 起**改成运行时解析：
+
+1. 启动时扫描 `document.styleSheets` 与 DOM，用一组固定探针类名反查当前前缀
+2. 扫不到就退到内置的 FALLBACK 表
+3. 把 CSS 模板里的占位符替换成真实前缀再注入，扫到新前缀时自动重刷
+
+所以**宿主小版本升级通常不需要更新插件**。装好后可以自查：
+
+```js
+window.__DSH_AURORA_SKIN__.diagnostics()
+// { resolved: '15/15', missing: [], prefix: { 'mP3x-q': 'vcssFG', ... } }
+```
+
+`resolved` 不满时 console 会有一条 `warn` 指出缺哪几组——把那行发出来就能定位。
+
 
 ## 已知限制
 

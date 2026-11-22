@@ -174,10 +174,36 @@ again.
 - Node / browser versions are inherited from the host — the plugin ships as-is, no build
   step.
 
-The skin targets the host's CSS-module class names (for example `mP3x-q_frame`,
-`an3WzG_composerSeat`). These names are stable per module within a host build, but the
-hash prefix can change when the host UI is recompiled, so a new DSH release may require
-re-checking the selectors.
+### Verified versions
+
+| Plugin | DSH | Date | Notes |
+|---|---|---|---|
+| 0.10.8 | `0.2.1-rc.3` | 2026-11-22 | older build, `mP3x-q`-style prefixes |
+| 0.10.8 | `0.2.2-rc.5` (NEXT 2.0.24-next) | 2026-11-22 | newer build, prefixes now `vcssFG`-style |
+
+### Host-agnostic class resolution (since 0.10.7)
+
+Host class names look like `<hashPrefix>_<localName>` (e.g. `mP3x-q_frame`) and that hash
+prefix is a **content hash** — it changes whenever the host UI is recompiled.
+
+**Before 0.10.7** the plugin hardcoded those prefixes, so a single host rebuild broke the
+entire skin. **Since 0.10.7** the prefixes are resolved at runtime:
+
+1. on startup, scan `document.styleSheets` and the DOM, using a fixed set of probe class
+   names to reverse-look-up the current prefix
+2. fall back to a built-in table when the scan finds nothing
+3. substitute placeholders in the CSS template, and re-inject if a new prefix shows up later
+
+So a minor DSH upgrade usually needs no plugin update. To self-check:
+
+```js
+window.__DSH_AURORA_SKIN__.diagnostics()
+// { resolved: '15/15', missing: [], prefix: { 'mP3x-q': 'vcssFG', ... } }
+```
+
+If `resolved` is not full, the console carries a `warn` naming the missing groups — paste
+that line to report the problem.
+
 
 ## Known limitations
 
