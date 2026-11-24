@@ -1,17 +1,17 @@
 {
   "name": "dsh-desktop-skin",
-  "version": "0.10.8",
+  "version": "0.10.10",
   "private": true,
   "description": "A wallpaper-aware glass skin for DeepSeek Harness: colors follow your wallpaper, every surface configurable.",
   "license": "MIT",
   "author": "NiceCNJ",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NiceCNJ/dsh-desktop-skin.git"
+    "url": "git+https://github.com/Nicecn/dsh-desktop-skin.git"
   },
-  "homepage": "https://github.com/NiceCNJ/dsh-desktop-skin#readme",
+  "homepage": "https://github.com/Nicecn/dsh-desktop-skin#readme",
   "bugs": {
-    "url": "https://github.com/NiceCNJ/dsh-desktop-skin/issues"
+    "url": "https://github.com/Nicecn/dsh-desktop-skin/issues"
   },
   "keywords": [
     "dsh",

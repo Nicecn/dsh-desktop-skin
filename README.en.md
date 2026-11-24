@@ -96,6 +96,26 @@ the live page immediately — no restart needed for visual changes.
 - The plugin-market page, the settings page itself and the right-hand side panel get the
   same surface treatment, so switching pages does not break the illusion.
 
+### Dark mode
+
+This skin is a **light, warm-orange** design. To keep it looking the same on your machine,
+the plugin **takes over the host's dark theme**: even when your OS or DeepSeek Harness runs
+in dark mode, the interface stays light and warm — it will not turn black or grey, and text,
+icons and menus will not end up "dark on dark".
+
+- **No need to turn dark mode off**, and no need to change your system theme. Install the
+  plugin, restart the app once, and that is the final look.
+- The account menu in the bottom-left, the `Ctrl+,` shortcut hints and the settings page —
+  all of which used to look dim in dark mode — now use the same light warm surface with dark
+  text.
+- Panels that sit above the content, such as the settings page, are now near-opaque and no
+  longer let the conversation underneath show through.
+- The colour wheel, opacity sliders and wallpaper are independent of light/dark mode and
+  keep working as before.
+
+If you still find a corner that looks too dark or hard to read, please
+[let us know](#feedback) — a screenshot helps the most.
+
 ## Install
 
 ### From GitHub
